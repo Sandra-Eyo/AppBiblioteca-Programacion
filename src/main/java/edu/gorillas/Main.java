@@ -86,6 +86,10 @@ public class Main {
         String titulo = sc.nextLine();
         System.out.println("Dame el precio del libro");
         float precio = sc.nextFloat();
+
+        // Agregar una línea para consumir el salto de línea pendiente
+        sc.nextLine(); // Consumir el salto de línea pendiente
+
         System.out.println("Dame el nombre del autor");
         String autorNombre = sc.nextLine();
 
