@@ -59,6 +59,8 @@ public class Main {
                     break;
                 case 2:
                     nuevoLibro(sentencia);
+                case 3:
+                    borrarLibro(sentencia);
             }
 
         } while (op != 11);
@@ -108,6 +110,36 @@ public class Main {
             }
         } catch (SQLException e) {
             System.err.println("Se ha producido un error al insertar el libro.");
+            e.printStackTrace();
+        }
+    }
+
+    private static void borrarLibro(Statement sentencia) {
+        System.out.println("Dame nombre del libro que deseas eliminar");
+        String nombreLibro = sc.nextLine();
+
+        try {
+            // Verificar si el libro existe
+            ResultSet resultado = sentencia.executeQuery("SELECT * FROM Libros WHERE Titulo = '" + nombreLibro + "'");
+
+            if (resultado.next()) {
+                // Si el libro existe, solicitar confirmación para eliminar
+                System.out.println("¿Seguro que deseas eliminar el libro? (s para sí, n para no)");
+                String confirmacion = sc.nextLine();
+
+                if (confirmacion.equalsIgnoreCase("s")) {
+                    // Eliminar el libro de la base de datos
+                    sentencia.executeUpdate("DELETE FROM Libros WHERE Titulo = '" + nombreLibro + "'");
+                    System.out.println("Libro eliminado correctamente.");
+                } else {
+                    System.out.println("Operación cancelada.");
+                }
+            } else {
+                // El libro no existe en la base de datos
+                System.out.println("Error: El libro '" + nombreLibro + "' no existe en la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al eliminar el libro.");
             e.printStackTrace();
         }
     }
