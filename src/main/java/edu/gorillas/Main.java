@@ -59,22 +59,31 @@ public class Main {
                     break;
                 case 2:
                     nuevoLibro(sentencia);
+                    break;
                 case 3:
                     borrarLibro(sentencia);
+                    break;
                 case 4:
                     borrarAutor(sentencia);
+                    break;
                 case 5:
                     consultarLibroPorTitulo(sentencia);
+                    break;
                 case 6:
                     consultarLibrosPorAutor(sentencia);
+                    break;
                 case 7:
                     listarLibros(sentencia);
+                    break;
                 case 8:
                     listarAutoresConLibros(sentencia);
+                    break;
                 case 9:
                     modificarLibroPorTitulo(sentencia);
+                    break;
                 case 10:
                     modificarAutorPorDNI(sentencia);
+                    break;
             }
 
         } while (op != 11);
