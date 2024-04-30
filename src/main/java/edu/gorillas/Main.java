@@ -343,7 +343,35 @@ public class Main {
         }
     }
 
-    
+    private static void modificarAutorPorDNI(Statement sentencia) {
+        System.out.println("Introduce el DNI del autor que deseas modificar:");
+        String dniAutor = sc.nextLine();
+
+        try {
+            // Consultar el autor por DNI
+            ResultSet resultado = sentencia.executeQuery("SELECT * FROM Autores WHERE DNI = '" + dniAutor + "'");
+
+            if (resultado.next()) {
+                // Si se encuentra el autor, solicitar nuevos datos al usuario
+                System.out.println("Introduce el nuevo nombre del autor:");
+                String nuevoNombre = sc.nextLine();
+                System.out.println("Introduce la nueva nacionalidad del autor:");
+                String nuevaNacionalidad = sc.nextLine();
+
+                // Actualizar los datos del autor en la base de datos
+                sentencia.executeUpdate("UPDATE Autores SET Nombre = '" + nuevoNombre + "', Nacionalidad = '" + nuevaNacionalidad + "' WHERE DNI = '" + dniAutor + "'");
+                System.out.println("Autor modificado correctamente.");
+            } else {
+                // Si no se encuentra el autor, mostrar un mensaje de error
+                System.out.println("No se encontró ningún autor con el DNI '" + dniAutor + "'.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al modificar el autor por DNI.");
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }
