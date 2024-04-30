@@ -144,5 +144,105 @@ public class Main {
         }
     }
 
+    private static void borrarAutor(Statement sentencia) {
+        System.out.println("Dame el nombre del autor que deseas eliminar");
+        String nombreAutor = sc.nextLine();
+
+        try {
+            // Verificar si el autor existe
+            ResultSet resultado = sentencia.executeQuery("SELECT * FROM Autores WHERE Nombre = '" + nombreAutor + "'");
+
+            if (resultado.next()) {
+                // Si el autor existe, obtener su DNI
+                String dniAutor = resultado.getString("DNI");
+
+                // Eliminar los libros asociados al autor
+                sentencia.executeUpdate("DELETE FROM Libros WHERE Autor = '" + dniAutor + "'");
+                System.out.println("Libros del autor eliminados correctamente.");
+
+                // Eliminar al autor
+                sentencia.executeUpdate("DELETE FROM Autores WHERE Nombre = '" + nombreAutor + "'");
+                System.out.println("Autor eliminado correctamente.");
+            } else {
+                // El autor no existe en la base de datos
+                System.out.println("Error: El autor '" + nombreAutor + "' no existe en la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al eliminar el autor.");
+            e.printStackTrace();
+        }
+    }
+
+    private static void consultarLibroPorTitulo(Statement sentencia) {
+        System.out.println("Introduce el título del libro que deseas consultar:");
+        String tituloLibro = sc.nextLine();
+
+        try {
+            // Consultar el libro por título
+            ResultSet resultado = sentencia.executeQuery("SELECT * FROM Libros WHERE Titulo = '" + tituloLibro + "'");
+
+            if (resultado.next()) {
+                // Si se encuentra el libro, mostrar sus detalles
+                String titulo = resultado.getString("Titulo");
+                float precio = resultado.getFloat("Precio");
+                String autorDNI = resultado.getString("Autor");
+
+                // Obtener el nombre del autor utilizando el DNI del libro
+                ResultSet resultadoAutor = sentencia.executeQuery("SELECT Nombre FROM Autores WHERE DNI = '" + autorDNI + "'");
+                resultadoAutor.next();
+                String nombreAutor = resultadoAutor.getString("Nombre");
+
+                System.out.println("Título: " + titulo);
+                System.out.println("Precio: " + precio);
+                System.out.println("Autor: " + nombreAutor);
+            } else {
+                // Si no se encuentra el libro, mostrar un mensaje de error
+                System.out.println("No se encontró ningún libro con el título '" + tituloLibro + "'.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al consultar el libro por título.");
+            e.printStackTrace();
+        }
+    }
+
+    private static void consultarLibrosPorAutor(Statement sentencia) {
+        System.out.println("Introduce el nombre del autor:");
+        String nombreAutor = sc.nextLine();
+
+        try {
+            // Consultar el autor por nombre para obtener su DNI
+            ResultSet resultadoAutor = sentencia.executeQuery("SELECT DNI FROM Autores WHERE Nombre = '" + nombreAutor + "'");
+
+            if (resultadoAutor.next()) {
+                // Si se encuentra el autor, obtener su DNI
+                String autorDNI = resultadoAutor.getString("DNI");
+
+                // Consultar los libros del autor utilizando su DNI
+                ResultSet resultadoLibros = sentencia.executeQuery("SELECT * FROM Libros WHERE Autor = '" + autorDNI + "'");
+
+                if (resultadoLibros.next()) {
+                    // Si el autor tiene libros, mostrar los detalles de cada libro
+                    System.out.println("Libros del autor '" + nombreAutor + "':");
+                    do {
+                        String titulo = resultadoLibros.getString("Titulo");
+                        float precio = resultadoLibros.getFloat("Precio");
+
+                        System.out.println("Título: " + titulo + ", Precio: " + precio);
+                    } while (resultadoLibros.next());
+                } else {
+                    // Si el autor no tiene libros, mostrar un mensaje indicando que no hay libros del autor
+                    System.out.println("El autor '" + nombreAutor + "' no tiene libros asociados.");
+                }
+            } else {
+                // Si no se encuentra el autor, mostrar un mensaje indicando que el autor no existe
+                System.out.println("No se encontró ningún autor con el nombre '" + nombreAutor + "'.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al consultar los libros del autor.");
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
