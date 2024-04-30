@@ -243,6 +243,37 @@ public class Main {
         }
     }
 
+    private static void listarLibros(Statement sentencia) {
+        try {
+            // Consultar todos los libros
+            ResultSet resultadoLibros = sentencia.executeQuery("SELECT * FROM Libros");
+
+            if (resultadoLibros.next()) {
+                // Si hay libros, mostrar los detalles de cada libro
+                System.out.println("Listado de todos los libros:");
+
+                do {
+                    String titulo = resultadoLibros.getString("Titulo");
+                    float precio = resultadoLibros.getFloat("Precio");
+                    String autorDNI = resultadoLibros.getString("Autor");
+
+                    // Obtener el nombre del autor utilizando el DNI del libro
+                    ResultSet resultadoAutor = sentencia.executeQuery("SELECT Nombre FROM Autores WHERE DNI = '" + autorDNI + "'");
+                    resultadoAutor.next();
+                    String nombreAutor = resultadoAutor.getString("Nombre");
+
+                    System.out.println("Título: " + titulo + ", Precio: " + precio + ", Autor: " + nombreAutor);
+                } while (resultadoLibros.next());
+            } else {
+                // Si no hay libros, mostrar un mensaje indicando que no se encontraron libros
+                System.out.println("No se encontraron libros en la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al listar los libros.");
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
