@@ -61,6 +61,20 @@ public class Main {
                     nuevoLibro(sentencia);
                 case 3:
                     borrarLibro(sentencia);
+                case 4:
+                    borrarAutor(sentencia);
+                case 5:
+                    consultarLibroPorTitulo(sentencia);
+                case 6:
+                    consultarLibrosPorAutor(sentencia);
+                case 7:
+                    listarLibros(sentencia);
+                case 8:
+                    listarAutoresConLibros(sentencia);
+                case 9:
+                    modificarLibroPorTitulo(sentencia);
+                case 10:
+                    modificarAutorPorDNI(sentencia);
             }
 
         } while (op != 11);
