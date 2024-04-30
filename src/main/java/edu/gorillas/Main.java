@@ -274,6 +274,76 @@ public class Main {
         }
     }
 
+    private static void listarAutoresConLibros(Statement sentencia) {
+        try {
+            // Consultar todos los autores
+            ResultSet resultadoAutores = sentencia.executeQuery("SELECT * FROM Autores");
+
+            while (resultadoAutores.next()) {
+                // Para cada autor, obtener su nombre y DNI
+                String dniAutor = resultadoAutores.getString("DNI");
+                String nombreAutor = resultadoAutores.getString("Nombre");
+
+                // Consultar los libros del autor utilizando su DNI
+                ResultSet resultadoLibros = sentencia.executeQuery("SELECT * FROM Libros WHERE Autor = '" + dniAutor + "'");
+
+                // Mostrar el nombre del autor
+                System.out.println("Autor: " + nombreAutor);
+
+                if (resultadoLibros.next()) {
+                    // Si el autor tiene libros, mostrar los detalles de cada libro
+                    System.out.println("Libros:");
+
+                    do {
+                        String titulo = resultadoLibros.getString("Titulo");
+                        float precio = resultadoLibros.getFloat("Precio");
+
+                        System.out.println("  Título: " + titulo + ", Precio: " + precio);
+                    } while (resultadoLibros.next());
+                } else {
+                    // Si el autor no tiene libros, mostrar un mensaje indicando que no hay libros del autor
+                    System.out.println("  Este autor no tiene libros asociados.");
+                }
+
+                // Separador entre autores
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al listar los autores con sus libros.");
+            e.printStackTrace();
+        }
+    }
+
+    private static void modificarLibroPorTitulo(Statement sentencia) {
+        System.out.println("Introduce el título del libro que deseas modificar:");
+        String tituloLibro = sc.nextLine();
+
+        try {
+            // Consultar el libro por título
+            ResultSet resultado = sentencia.executeQuery("SELECT * FROM Libros WHERE Titulo = '" + tituloLibro + "'");
+
+            if (resultado.next()) {
+                // Si se encuentra el libro, solicitar nuevos datos al usuario
+                System.out.println("Introduce el nuevo título del libro:");
+                String nuevoTitulo = sc.nextLine();
+                System.out.println("Introduce el nuevo precio del libro:");
+                float nuevoPrecio = sc.nextFloat();
+                sc.nextLine(); // Consumir el salto de línea pendiente
+
+                // Actualizar los datos del libro en la base de datos
+                sentencia.executeUpdate("UPDATE Libros SET Titulo = '" + nuevoTitulo + "', Precio = " + nuevoPrecio + " WHERE Titulo = '" + tituloLibro + "'");
+                System.out.println("Libro modificado correctamente.");
+            } else {
+                // Si no se encuentra el libro, mostrar un mensaje de error
+                System.out.println("No se encontró ningún libro con el título '" + tituloLibro + "'.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error al modificar el libro por título.");
+            e.printStackTrace();
+        }
+    }
+
+    
 
 
 }
