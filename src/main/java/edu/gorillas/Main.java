@@ -39,16 +39,16 @@ public class Main {
 
         do {
             System.out.println("**** MENU ****\n"
-                    + "[1] Insertar un nuevo Autor/a"
-                    + "[2] Insertar un nuevo libro"
-                    + "[3] Borrar Libro"
-                    + "[4] Borrar autor"
-                    + "[5] Consultar datos de un libro"
-                    + "[6] Consultar libros de un Autor"
-                    + "[7] Listar libros"
-                    + "[8] Listar autores con sus libros"
-                    + "[9] Modificar libro por título"
-                    + "[10] Modificar autor por DNI"
+                    + "[1] Insertar un nuevo Autor/a\n"
+                    + "[2] Insertar un nuevo libro\n"
+                    + "[3] Borrar Libro\n"
+                    + "[4] Borrar autor\n"
+                    + "[5] Consultar datos de un libro\n"
+                    + "[6] Consultar libros de un Autor\n"
+                    + "[7] Listar libros\n"
+                    + "[8] Listar autores con sus libros\n"
+                    + "[9] Modificar libro por título\n"
+                    + "[10] Modificar autor por DNI\n"
                     + "[11] Salir");
             op = sc.nextInt();
             sc.nextLine();
